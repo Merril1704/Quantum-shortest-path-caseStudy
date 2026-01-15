@@ -1,0 +1,111 @@
+{
+  "graph_name": "diamond_paths",
+  "graph_info": {
+    "nodes": 7,
+    "edges": 8,
+    "density": 0.381,
+    "directed": false,
+    "has_negative_weights": false
+  },
+  "source": 0,
+  "target": 6,
+  "dijkstra_result": {
+    "algorithm": "Dijkstra",
+    "path": [
+      0,
+      1,
+      3,
+      4,
+      6
+    ],
+    "distance": 15,
+    "iterations": 7,
+    "success": true,
+    "message": "Path found successfully",
+    "convergence": {
+      "total_iterations": 7,
+      "converged_at": 1,
+      "improvement_pattern": "plateau",
+      "final_stable_iterations": 6
+    },
+    "path_verification": {
+      "valid": true,
+      "starts_at_source": true,
+      "ends_at_target": true,
+      "all_edges_exist": true,
+      "issues": []
+    }
+  },
+  "bellman_ford_result": {
+    "algorithm": "Bellman-Ford",
+    "path": [
+      0,
+      1,
+      3,
+      4,
+      6
+    ],
+    "distance": 15,
+    "iterations": 2,
+    "success": true,
+    "has_negative_cycle": false,
+    "message": "Path found successfully",
+    "convergence": {
+      "total_iterations": 2,
+      "converged_at": 1,
+      "improvement_pattern": "plateau",
+      "final_stable_iterations": 1
+    },
+    "path_verification": {
+      "valid": true,
+      "starts_at_source": true,
+      "ends_at_target": true,
+      "all_edges_exist": true,
+      "issues": []
+    }
+  },
+  "quantum_result": {
+    "algorithm": "Quantum-Inspired",
+    "path": [
+      0,
+      2,
+      3,
+      4,
+      6
+    ],
+    "distance": 15.0,
+    "energy": 15.0,
+    "iterations": 73,
+    "success": true,
+    "convergence_iteration": 23,
+    "message": "Valid path found via energy minimization",
+    "convergence": {
+      "total_iterations": 73,
+      "converged_at": 43,
+      "improvement_pattern": "oscillating",
+      "final_stable_iterations": 30
+    },
+    "path_verification": {
+      "valid": true,
+      "starts_at_source": true,
+      "ends_at_target": true,
+      "all_edges_exist": true,
+      "issues": []
+    }
+  },
+  "comparison_summary": {
+    "algorithms_succeeded": 3,
+    "best_algorithm": "Dijkstra",
+    "best_distance": 15,
+    "all_paths_identical": false,
+    "iteration_counts": {
+      "Dijkstra": 7,
+      "Bellman-Ford": 2,
+      "Quantum-Inspired": 73
+    },
+    "key_differences": [
+      "Quantum-inspired used significantly more iterations (73 vs 7/2)"
+    ]
+  },
+  "timestamp": "2026-01-15T15:45:39.124455"
+}

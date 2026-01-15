@@ -1,0 +1,102 @@
+{
+  "graph_name": "negative_cycle",
+  "graph_info": {
+    "nodes": 8,
+    "edges": 9,
+    "density": 0.161,
+    "directed": true,
+    "has_negative_weights": true
+  },
+  "source": 0,
+  "target": 5,
+  "dijkstra_result": {
+    "algorithm": "Dijkstra",
+    "path": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "distance": 15,
+    "iterations": 8,
+    "success": true,
+    "message": "Path found successfully (WARNING: Graph has negative weights - result may be incorrect)",
+    "convergence": {
+      "total_iterations": 8,
+      "converged_at": 1,
+      "improvement_pattern": "plateau",
+      "final_stable_iterations": 7
+    },
+    "path_verification": {
+      "valid": true,
+      "starts_at_source": true,
+      "ends_at_target": true,
+      "all_edges_exist": true,
+      "issues": []
+    }
+  },
+  "bellman_ford_result": {
+    "algorithm": "Bellman-Ford",
+    "path": null,
+    "distance": "infinity",
+    "iterations": 7,
+    "success": false,
+    "has_negative_cycle": true,
+    "message": "Negative cycle detected - no valid shortest path exists",
+    "convergence": {
+      "total_iterations": 7,
+      "converged_at": 7,
+      "improvement_pattern": "monotonic_decrease",
+      "final_stable_iterations": 0
+    },
+    "path_verification": null
+  },
+  "quantum_result": {
+    "algorithm": "Quantum-Inspired",
+    "path": [
+      0,
+      1,
+      2,
+      6,
+      7,
+      5
+    ],
+    "distance": 16.0,
+    "energy": 16.0,
+    "iterations": 50,
+    "success": true,
+    "convergence_iteration": 0,
+    "message": "Valid path found via energy minimization",
+    "convergence": {
+      "total_iterations": 50,
+      "converged_at": 1,
+      "improvement_pattern": "plateau",
+      "final_stable_iterations": 49
+    },
+    "path_verification": {
+      "valid": true,
+      "starts_at_source": true,
+      "ends_at_target": true,
+      "all_edges_exist": true,
+      "issues": []
+    }
+  },
+  "comparison_summary": {
+    "algorithms_succeeded": 2,
+    "best_algorithm": "Dijkstra",
+    "best_distance": 15,
+    "all_paths_identical": false,
+    "iteration_counts": {
+      "Dijkstra": 8,
+      "Bellman-Ford": 7,
+      "Quantum-Inspired": 50
+    },
+    "key_differences": [
+      "Bellman-Ford detected negative cycle",
+      "Quantum-inspired used significantly more iterations (50 vs 8/7)"
+    ]
+  },
+  "timestamp": "2026-01-15T15:45:39.531609"
+}

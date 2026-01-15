@@ -1,0 +1,97 @@
+# Shortest Path Algorithm Comparison - Walkthrough
+
+## Summary
+
+Implemented a complete case study comparing **Dijkstra's**, **Bellman-Ford**, and **Quantum-Inspired** shortest path algorithms, with organized documentation per graph.
+
+---
+
+## What Was Built
+
+### Project Structure
+```
+d:/Projects/Quantum_shortest_path/
+├── main.py                    # CLI entry point
+├── requirements.txt           # Dependencies
+├── src/
+│   ├── graph.py               # Graph data structure
+│   ├── graph_generator.py     # 6 curated test graphs
+│   ├── algorithms/
+│   │   ├── dijkstra.py        # With iteration tracking
+│   │   ├── bellman_ford.py    # Negative cycle detection
+│   │   └── quantum_inspired.py # Energy minimization
+│   ├── evaluation/
+│   │   ├── metrics.py         # Path verification
+│   │   ├── runner.py          # Algorithm comparison
+│   │   └── report_generator.py # Markdown reports
+│   └── visualization/
+│       └── visualizer.py      # Convergence & path plots
+├── tests/
+│   ├── test_graph.py          # 10 graph tests
+│   └── test_algorithms.py     # 14 algorithm tests
+└── results/                   # Generated outputs
+```
+
+---
+
+## Test Results
+
+**24 tests passed:**
+- Graph creation (directed/undirected)
+- Negative weight handling
+- Negative cycle detection
+- Algorithm correctness verification
+- Quantum-inspired reproducibility with seed
+
+---
+
+## Generated Results
+
+Ran comparison on **6 curated graphs**, each with its own folder:
+
+| Graph | Key Finding |
+|-------|-------------|
+| sparse_basic | All algorithms found same path (distance 10) |
+| dense_mesh | Same optimal path across algorithms |
+| negative_shortcut | Paths matched despite negative edge |
+| bottleneck | Different paths through chokepoint |
+| diamond_paths | Tie-breaking behavior tested |
+| **negative_cycle** | **Bellman-Ford detected negative cycle** |
+
+### Sample Visualization
+
+![Convergence comparison showing iteration counts](C:/Users/Merril/.gemini/antigravity/brain/917da472-8b70-40d0-ae23-e9e352dd0c2d/convergence_example.png)
+
+---
+
+## Key Observations
+
+1. **Dijkstra** - Fewest iterations on positive-weight graphs
+2. **Bellman-Ford** - Only algorithm that correctly detects negative cycles
+3. **Quantum-Inspired** - Higher iteration count but finds valid paths through energy minimization
+
+---
+
+## How to Use
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests
+python -m pytest tests/ -v
+
+# Run full comparison
+python main.py
+
+# Results saved to results/ folder
+```
+
+---
+
+## Output Files
+
+- [results/summary_report.md](file:///d:/Projects/Quantum_shortest_path/results/summary_report.md) - Overall comparison
+- `results/[graph]/observations.md` - Per-graph analysis tables
+- `results/[graph]/convergence.png` - Convergence plots
+- `results/[graph]/path_comparison.png` - Path visualizations

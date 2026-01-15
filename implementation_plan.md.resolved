@@ -1,0 +1,173 @@
+# Shortest Path Algorithm Comparison - Case Study
+
+A comparative study of Dijkstra's, Bellman-Ford, and Energy-Based Quantum-Inspired algorithms for shortest path problems, focusing on behavioral analysis rather than raw performance.
+
+---
+
+## Proposed Changes
+
+### Core Infrastructure
+
+#### [NEW] [graph.py](file:///d:/Projects/Quantum_shortest_path/src/graph.py)
+- `Graph` class supporting directed/undirected weighted graphs
+- Supports **positive and negative** edge weights
+- Adjacency list with methods: `add_edge()`, `get_neighbors()`, `get_weight()`, `to_adjacency_matrix()`
+
+#### [NEW] [graph_generator.py](file:///d:/Projects/Quantum_shortest_path/src/graph_generator.py)
+- `generate_random_graph(n_nodes, density, weight_range, directed, allow_negative)`
+- **Graph complexity validator**: `validate_graph_complexity()` - ensures graph has:
+  - Multiple alternative paths between source/target
+  - Varying edge weights (not uniform)
+  - Sufficient density for meaningful comparison
+- Predefined curated test graphs designed to highlight algorithm differences
+
+---
+
+### Algorithm Implementations
+
+#### [NEW] [dijkstra.py](file:///d:/Projects/Quantum_shortest_path/src/algorithms/dijkstra.py)
+- Dijkstra's algorithm with priority queue
+- Per-iteration state recording (distances, visited nodes)
+- Returns: path, distance, iteration history
+
+#### [NEW] [bellman_ford.py](file:///d:/Projects/Quantum_shortest_path/src/algorithms/bellman_ford.py)
+- Bellman-Ford with edge relaxation tracking
+- **Negative cycle detection**
+- Handles negative edge weights
+- Per-iteration distance array snapshots
+- Returns: path, distance, iteration history, negative_cycle_detected
+
+#### [NEW] [quantum_inspired.py](file:///d:/Projects/Quantum_shortest_path/src/algorithms/quantum_inspired.py)
+- Energy-based optimization formulation
+- Energy function: `E(path) = Σ edge_weights + λ * constraint_penalties`
+- Simulated annealing-style probabilistic updates
+- Per-iteration energy and path state recording
+- Returns: path, energy/distance, iteration history
+
+---
+
+### Evaluation & Results Documentation
+
+#### [NEW] [metrics.py](file:///d:/Projects/Quantum_shortest_path/src/evaluation/metrics.py)
+- `verify_path_correctness(graph, path, source, target)`
+- `calculate_path_length(graph, path)`
+- `analyze_convergence(history)` - stability detection
+
+#### [NEW] [runner.py](file:///d:/Projects/Quantum_shortest_path/src/evaluation/runner.py)
+- `AlgorithmRunner` class to execute all algorithms on same graph
+- Records per iteration: path state, distance/energy progression
+- Exports structured results to JSON
+
+#### [NEW] [report_generator.py](file:///d:/Projects/Quantum_shortest_path/src/evaluation/report_generator.py)
+- Generates **markdown reports** per graph with organized observations
+- Report structure detailed below
+
+---
+
+### Results Documentation Structure
+
+```
+results/
+├── summary_report.md          # Overview of all graphs and key findings
+├── graph_01_sparse/
+│   ├── graph_info.md          # Graph properties and visualization
+│   ├── observations.md        # Algorithm comparison for this graph
+│   ├── convergence.png        # Convergence plot
+│   └── path_comparison.png    # Visual path overlay
+├── graph_02_dense/
+│   └── ...
+└── graph_03_negative_weights/
+    └── ...
+```
+
+**Per-Graph `observations.md` Format:**
+```markdown
+# Graph: [Name] - Observations
+
+## Graph Properties
+| Property | Value |
+|----------|-------|
+| Nodes | 12 |
+| Edges | 28 |
+| Density | 0.42 |
+| Has Negative Weights | Yes |
+| Source → Target | 0 → 11 |
+
+## Algorithm Results
+
+### Dijkstra's Algorithm
+- **Path Found**: 0 → 3 → 7 → 11
+- **Total Distance**: 23
+- **Iterations**: 8
+- **Convergence**: Monotonic decrease, stable after iteration 6
+- **Notes**: Cannot handle negative weights correctly
+
+### Bellman-Ford Algorithm
+- **Path Found**: 0 → 2 → 5 → 11
+- **Total Distance**: 19
+- **Iterations**: 11
+- **Convergence**: Gradual improvement with relaxation waves
+- **Notes**: Found shorter path using negative edge (2→5, weight -4)
+
+### Quantum-Inspired Algorithm
+- **Path Found**: 0 → 2 → 5 → 11
+- **Total Distance**: 19
+- **Iterations**: 45
+- **Convergence**: Noisy initial phase, stabilized after iteration 30
+- **Stability**: 3 runs showed consistent final result
+- **Notes**: Higher iteration count but found optimal path
+
+## Key Differences Observed
+1. Bellman-Ford exploited negative edge that Dijkstra missed
+2. Quantum-inspired required 4x more iterations but matched optimal
+3. ...
+```
+
+---
+
+### Visualization
+
+#### [NEW] [visualizer.py](file:///d:/Projects/Quantum_shortest_path/src/visualization/visualizer.py)
+- `plot_graph_with_path()` - NetworkX-based graph visualization
+- `plot_convergence()` - Distance/energy over iterations (all 3 algorithms overlaid)
+- `plot_comparison_chart()` - Side-by-side algorithm metrics
+
+---
+
+### Main Entry Point
+
+#### [NEW] [main.py](file:///d:/Projects/Quantum_shortest_path/main.py)
+- CLI interface for running comparisons
+- Validates graph complexity before running
+- Generates organized results folder with all documentation
+
+---
+
+## Curated Test Graphs
+
+To ensure meaningful differences are observable:
+
+| Graph | Nodes | Type | Key Feature |
+|-------|-------|------|-------------|
+| `sparse_basic` | 8 | Directed | Multiple paths, simple weights |
+| `dense_mesh` | 12 | Undirected | High connectivity, many alternatives |
+| `negative_shortcut` | 10 | Directed | Negative edge creates shorter path |
+| `bottleneck` | 15 | Directed | Single chokepoint, tests greedy vs global |
+| `diamond_paths` | 6 | Undirected | Two paths of similar length |
+
+---
+
+## Verification Plan
+
+### Automated Tests
+```bash
+cd d:/Projects/Quantum_shortest_path
+python -m pytest tests/ -v
+```
+
+### Manual Verification
+```bash
+python main.py
+```
+- Check `results/summary_report.md` for organized findings
+- Verify each graph folder contains observations and visualizations
