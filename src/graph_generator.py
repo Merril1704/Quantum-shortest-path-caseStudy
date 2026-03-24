@@ -272,3 +272,144 @@ def get_all_test_graphs() -> List[Tuple[str, Graph, int, int, str]]:
         result.append((name, graph, source, target, desc))
     
     return result
+
+
+# ─────────────────────────────────────────────────────────────
+# Graphs for quantum-advantage experiments
+# ─────────────────────────────────────────────────────────────
+
+def create_waypoint_graph() -> Tuple[Graph, int, int, List[int], List[int], str]:
+    """
+    Graph designed for the constrained shortest-path experiment.
+
+    Properties:
+      - The unconstrained shortest path SKIPS the mandatory waypoints entirely.
+      - Two mandatory waypoints (3 and 9) must be visited.
+      - Three forbidden zones (6, 7, 8) block the direct-path corridor.
+      - Classical must try 2! = 2 orderings × multiple Dijkstra segments.
+      - QI solves in one energy-minimisation run of any length.
+
+    Returns:
+        (graph, source, target, waypoints, forbidden, description)
+    """
+    graph = Graph(directed=True)
+
+    # Fast direct corridor (skips waypoints): 0→1→2→12→13→14  — dist=12
+    # Waypoint route via node 3 and 9 adds detour cost but must be used
+    edges = [
+        # Direct corridor source→target (no waypoints)
+        (0, 1, 2), (1, 2, 2), (2, 12, 3), (12, 13, 2), (13, 14, 3),
+
+        # Detour to waypoint 3
+        (0, 4, 3), (4, 3, 2),   # reach waypoint 3
+        (3, 5, 2), (5, 10, 4),  # leave waypoint 3
+
+        # Detour to waypoint 9
+        (10, 9, 3),              # reach waypoint 9
+        (9, 11, 2), (11, 14, 5),  # leave waypoint 9 → target
+
+        # Alternative connectors
+        (0, 4, 3), (4, 5, 3),
+        (5, 9, 4),  (9, 12, 4),
+        (3, 10, 5), (10, 11, 2),
+        (2, 5, 6),
+    ]
+    for u, v, w in edges:
+        graph.add_edge(u, v, w)
+
+    waypoints = [3, 9]        # MUST visit
+    forbidden = [6, 7, 8]     # MUST NOT visit (not in graph, but test avoidance)
+    return (
+        graph, 0, 14, waypoints, forbidden,
+        "Constrained graph: shortest unconstrained path skips mandatory waypoints 3 & 9"
+    )
+
+
+def create_hostile_terrain_graph() -> Tuple[Graph, int, int, List[int], List[int], str]:
+    """
+    Larger constrained graph simulating hostile terrain (e.g. a no-fly zone).
+
+    - 3 mandatory waypoints: checkpoints that must be visited.
+    - 5 forbidden nodes: dangerous/blocked regions.
+    - Forces classical to enumerate 3! = 6 Dijkstra orderings.
+
+    Returns:
+        (graph, source, target, waypoints, forbidden, description)
+    """
+    graph = Graph(directed=True)
+
+    edges = [
+        # Main routes
+        (0, 1, 4), (1, 2, 3), (2, 3, 5), (3, 4, 2),
+        (0, 5, 2), (5, 6, 3), (6, 7, 4), (7, 4, 3),
+        (0, 8, 6), (8, 9, 2), (9, 10, 4), (10, 4, 5),
+
+        # Checkpoint connectors (mandatory waypoints: 11, 14, 17)
+        (1, 11, 3), (11, 12, 2), (12, 14, 4),  # reach WP1=11 then WP2=14
+        (5, 11, 5), (11, 9, 3),
+        (2, 14, 4), (14, 15, 3), (15, 17, 2),  # WP2=14, WP3=17
+        (9, 14, 3), (17, 10, 2), (17, 4, 6),
+
+        # Cross-links
+        (3, 14, 6), (7, 17, 4), (8, 11, 5),
+        (12, 17, 5), (15, 4, 4),
+    ]
+    for u, v, w in edges:
+        graph.add_edge(u, v, w)
+
+    waypoints = [11, 14, 17]          # 3 mandatory checkpoints
+    forbidden = [6, 7, 13, 16, 18]   # blocked zones (some don't exist in graph — that's fine)
+    return (
+        graph, 0, 4, waypoints, forbidden,
+        "Hostile terrain: 3 mandatory checkpoints, 5 forbidden zones — classical needs 6 Dijkstra orderings"
+    )
+
+
+def create_risk_graph() -> Tuple[Graph, int, int, dict, str]:
+    """
+    Graph for multi-objective experiment.
+
+    Each edge has:
+      - weight  (travel distance/cost)
+      - risk    (0–10 danger score, stored separately)
+
+    The shortest-distance path has HIGH risk.
+    The safest path has HIGHER distance.
+    The Pareto front contains both + trade-off paths in between.
+
+    Returns:
+        (graph, source, target, risk_attr, description)
+        risk_attr: Dict mapping (u,v) -> risk score
+    """
+    graph = Graph(directed=True)
+
+    # Edges: (u, v, distance, risk)
+    edge_data = [
+        # Fast but risky highway: 0→2→3→9  dist=8, risk=22
+        (0, 2, 2, 8), (2, 3, 3, 7), (3, 9, 3, 7),
+
+        # Safe but slow mountain road: 0→1→4→5→9  dist=18, risk=3
+        (0, 1, 5, 1), (1, 4, 4, 1), (4, 5, 5, 0), (5, 9, 4, 1),
+
+        # Medium trade-off: 0→6→7→8→9  dist=13, risk=10
+        (0, 6, 4, 3), (6, 7, 3, 4), (7, 8, 3, 2), (8, 9, 3, 1),
+
+        # Another trade-off via node 10: 0→1→10→9  dist=14, risk=5
+        (1, 10, 4, 2), (10, 9, 5, 3),
+
+        # Short hops (high risk, low distance)
+        (0, 3, 5, 9),   # direct semi-risky shortcut
+        (2, 9, 6, 5),   # risky but shorter than safe route
+        (6, 9, 8, 2),   # moderate
+    ]
+
+    risk_attr = {}
+    for u, v, dist, risk in edge_data:
+        graph.add_edge(u, v, dist)
+        risk_attr[(u, v)] = float(risk)
+
+    return (
+        graph, 0, 9, risk_attr,
+        "Risk graph: fast path (dist=8, risk=22) vs safe path (dist=18, risk=3) — "
+        "Pareto front contains 3+ trade-off solutions"
+    )
