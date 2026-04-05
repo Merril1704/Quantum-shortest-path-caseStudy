@@ -17,7 +17,7 @@ Run:
     python experiments/experiment_stochastic.py
 
 Outputs:
-    results/stochastic/experiment_stochastic_report.md
+    results/raw_results/stochastic/experiment_stochastic_report.md
 """
 import os
 import sys
@@ -142,7 +142,7 @@ def dijkstra_on_means(graph: Graph, source: int, target: int) -> Optional[List[i
     return None
 
 
-def run_stochastic_experiment(output_dir: str = "results/stochastic", seed: int = 42):
+def run_stochastic_experiment(output_dir: str = "results/raw_results/stochastic", seed: int = 42):
     """Run stochastic weights experiment and generate report."""
     os.makedirs(output_dir, exist_ok=True)
     print("=" * 65)

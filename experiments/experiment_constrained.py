@@ -14,7 +14,7 @@ Run:
     python experiments/experiment_constrained.py
 
 Outputs:
-    results/constrained/experiment_constrained_report.md
+    results/raw_results/constrained/experiment_constrained_report.md
 """
 import os
 import sys
@@ -28,7 +28,7 @@ from src.algorithms.quantum_constrained import quantum_constrained_shortest_path
 from src.algorithms.classical_constrained import classical_constrained_shortest_path
 
 
-def run_constrained_experiment(output_dir: str = "results/constrained", seed: int = 42):
+def run_constrained_experiment(output_dir: str = "results/raw_results/constrained", seed: int = 42):
     """Run full constrained shortest path comparison and generate report."""
     os.makedirs(output_dir, exist_ok=True)
     print("=" * 65)

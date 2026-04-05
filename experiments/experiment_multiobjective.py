@@ -16,7 +16,7 @@ Run:
     python experiments/experiment_multiobjective.py
 
 Outputs:
-    results/multiobjective/experiment_multiobjective_report.md
+    results/raw_results/multiobjective/experiment_multiobjective_report.md
 """
 import os
 import sys
@@ -29,7 +29,7 @@ from src.algorithms.quantum_multiobjective import quantum_multiobjective_shortes
 from src.algorithms.classical_multiobjective import classical_multiobjective_shortest_path
 
 
-def run_multiobjective_experiment(output_dir: str = "results/multiobjective", seed: int = 42):
+def run_multiobjective_experiment(output_dir: str = "results/raw_results/multiobjective", seed: int = 42):
     """Run multi-objective comparison and generate report."""
     os.makedirs(output_dir, exist_ok=True)
     print("=" * 65)

@@ -1,0 +1,37 @@
+# ── Private: Personal docs and reports ──────────────────────────────
+docs/
+
+# ── Generated output (results are re-created by running the scripts) ─
+results/raw_results/
+results/benchmarks/
+
+# ── Python cache & build artifacts ───────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ── Virtual environments ──────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+
+# ── IDE / editor files ────────────────────────────────────────────────
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# ── OS files ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── Antigravity / planning artifacts ─────────────────────────────────
+implementation_plan.md.resolved
+walkthrough.md.resolved

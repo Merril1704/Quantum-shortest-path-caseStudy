@@ -221,48 +221,48 @@ def generate_benchmark_graphs(base_seed: int = 42) -> List[Tuple[str, Graph, int
     graphs.append(("benchmark_10_dense_negative", g, s, t,
                    "Dense directed graph with negative weights (8 nodes)", p))
     
-    # === Category 4: Larger graphs (15-20 nodes) ===
+    # === Category 4: Larger graphs (25-50 nodes) ===
     
     # 11. Large sparse directed
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=15, name="large_sparse_directed",
-        density=0.15, directed=True, seed=base_seed + 11
+        n_nodes=25, name="large_sparse_directed",
+        density=0.10, directed=True, seed=base_seed + 11
     )
     graphs.append(("benchmark_11_large_sparse", g, s, t,
-                   "Large sparse directed graph (15 nodes)", p))
+                   "Large sparse directed graph (25 nodes)", p))
     
     # 12. Large sparse undirected
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=15, name="large_sparse_undirected",
-        density=0.15, directed=False, seed=base_seed + 12
+        n_nodes=25, name="large_sparse_undirected",
+        density=0.10, directed=False, seed=base_seed + 12
     )
     graphs.append(("benchmark_12_large_undirected", g, s, t,
-                   "Large sparse undirected graph (15 nodes)", p))
+                   "Large sparse undirected graph (25 nodes)", p))
     
     # 13. Large medium density
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=15, name="large_medium",
-        density=0.25, directed=True, seed=base_seed + 13
+        n_nodes=35, name="large_medium",
+        density=0.15, directed=True, seed=base_seed + 13
     )
     graphs.append(("benchmark_13_large_medium", g, s, t,
-                   "Large medium-density directed graph (15 nodes)", p))
+                   "Large medium-density directed graph (35 nodes)", p))
     
     # 14. Large with negative weights
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=15, name="large_negative",
-        density=0.2, directed=True, allow_negative=True,
+        n_nodes=35, name="large_negative",
+        density=0.10, directed=True, allow_negative=True,
         negative_prob=0.1, seed=base_seed + 14
     )
     graphs.append(("benchmark_14_large_negative", g, s, t,
-                   "Large directed graph with negative weights (15 nodes)", p))
+                   "Large directed graph with negative weights (35 nodes)", p))
     
     # 15. Very large sparse
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=20, name="xlarge_sparse",
-        density=0.12, directed=True, seed=base_seed + 15
+        n_nodes=50, name="xlarge_sparse",
+        density=0.08, directed=True, seed=base_seed + 15
     )
     graphs.append(("benchmark_15_xlarge_sparse", g, s, t,
-                   "Extra large sparse directed graph (20 nodes)", p))
+                   "Extra large sparse directed graph (50 nodes)", p))
     
     # === Category 5: Special configurations ===
     
@@ -301,11 +301,11 @@ def generate_benchmark_graphs(base_seed: int = 42) -> List[Tuple[str, Graph, int
     
     # 20. Complex large graph
     g, s, t, d, p = generate_connected_graph(
-        n_nodes=18, name="complex_large",
-        density=0.3, weight_range=(1, 30), directed=True, seed=base_seed + 20
+        n_nodes=50, name="complex_large",
+        density=0.15, weight_range=(1, 30), directed=True, seed=base_seed + 20
     )
     graphs.append(("benchmark_20_complex", g, s, t,
-                   "Complex large directed graph (18 nodes, varied weights)", p))
+                   "Complex large directed graph (50 nodes, varied weights)", p))
     
     # Validate all graphs have paths
     valid_graphs = []

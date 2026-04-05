@@ -25,12 +25,13 @@ from src.algorithms.bellman_ford import bellman_ford
 from src.algorithms.quantum_inspired import quantum_inspired_shortest_path
 
 
-def run_comparison(output_dir: str = "results", seed: int = 42, verbose: bool = True):
+def run_comparison(raw_output_dir: str = "results/raw_results", report_dir: str = "docs/project_report", seed: int = 42, verbose: bool = True):
     """
     Run full algorithm comparison on all curated test graphs.
     
     Args:
-        output_dir: Directory to save results
+        raw_output_dir: Directory to save raw results
+        report_dir: Directory to save the summary report
         seed: Random seed for reproducibility
         verbose: Print progress to console
     """
@@ -75,7 +76,7 @@ def run_comparison(output_dir: str = "results", seed: int = 42, verbose: bool = 
         all_comparisons.append(comparison)
         
         # Create output directory for this graph
-        graph_dir = os.path.join(output_dir, name)
+        graph_dir = os.path.join(raw_output_dir, name)
         os.makedirs(graph_dir, exist_ok=True)
         
         # Generate documentation
@@ -133,12 +134,14 @@ def run_comparison(output_dir: str = "results", seed: int = 42, verbose: bool = 
                     print(f"      - {diff}")
     
     # Generate summary report
-    generate_summary_report(all_comparisons, output_dir)
+    os.makedirs(report_dir, exist_ok=True)
+    generate_summary_report(all_comparisons, report_dir)
     
     if verbose:
         print(f"\n{'=' * 60}")
         print(f"Comparison complete!")
-        print(f"Results saved to: {os.path.abspath(output_dir)}")
+        print(f"Raw results saved to: {os.path.abspath(raw_output_dir)}")
+        print(f"Summary report saved to: {os.path.abspath(report_dir)}")
         print(f"\nKey files:")
         print(f"  - summary_report.md - Overall findings")
         for comp in all_comparisons:
@@ -155,8 +158,8 @@ def main():
     )
     parser.add_argument(
         '-o', '--output',
-        default='results',
-        help='Output directory for results (default: results)'
+        default='results/raw_results',
+        help='Output directory for raw results (default: results/raw_results)'
     )
     parser.add_argument(
         '-s', '--seed',
@@ -173,7 +176,7 @@ def main():
     args = parser.parse_args()
     
     run_comparison(
-        output_dir=args.output,
+        raw_output_dir=args.output,
         seed=args.seed,
         verbose=not args.quiet
     )

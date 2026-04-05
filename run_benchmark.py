@@ -3,7 +3,7 @@ Benchmark Runner - Runs all algorithms on 20 generated benchmark graphs
 and produces a comprehensive markdown report.
 
 Usage:
-    python run_benchmark.py [--seed=42] [--output=results/benchmark]
+    python run_benchmark.py [--seed=42] [--output=results/benchmarks]
 """
 import os
 import sys
@@ -18,7 +18,7 @@ from src.evaluation.runner import AlgorithmRunner
 from src.graph_generator import validate_graph_complexity
 
 
-def run_benchmark(output_dir: str = "results/benchmark", seed: int = 42, verbose: bool = True):
+def run_benchmark(output_dir: str = "results/benchmarks", seed: int = 42, verbose: bool = True):
     """
     Run benchmark on 20 generated graphs and produce comprehensive report.
     
@@ -389,8 +389,8 @@ def main():
     )
     parser.add_argument(
         '-o', '--output',
-        default='results/benchmark',
-        help='Output directory for benchmark results (default: results/benchmark)'
+        default='results/benchmarks',
+        help='Output directory for benchmark results (default: results/benchmarks)'
     )
     parser.add_argument(
         '-s', '--seed',
